@@ -12,10 +12,19 @@ function ExpenseList({ expenses, onDeleteExpense }) {
         </div>
       ) : (
         <div className="expense-items">
-          {expenses.map((expense, index) => (
+          {expenses.map((expense) => (
             <div key={expense.id} className="expense-item">
               <div className="expense-icon">
-                {index % 3 === 0 ? '🛍️' : index % 3 === 1 ? '🚗' : '🍔'}
+                {(() => {
+                  const desc = expense.description.toLowerCase();
+                  if (desc.includes('food') || desc.includes('lunch') || desc.includes('dinner') || desc.includes('breakfast') || desc.includes('pizza')) {
+                    return '🍔';
+                  } else if (desc.includes('travel') || desc.includes('car') || desc.includes('taxi') || desc.includes('bus')) {
+                    return '🚗';
+                  } else {
+                    return '🛍️';
+                  }
+                })()}
               </div>
               <div className="expense-details">
                 <p className="expense-description">{expense.description}</p>

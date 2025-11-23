@@ -8,15 +8,27 @@ function ExpenseForm({ onAddExpense, onAddIncome }) {
 
   const handleAddExpense = (e) => {
     e.preventDefault()
-    if (description.trim() && amount > 0) {
-      onAddExpense({
-        description,
-        amount: parseFloat(amount),
-        date: new Date().toLocaleDateString()
-      })
-      setDescription('')
-      setAmount('')
+    console.log('Add Expense clicked - description:', description, 'amount:', amount)
+    const amountNum = parseFloat(amount)
+    console.log('Parsed amount:', amountNum)
+    
+    if (!description.trim()) {
+      console.warn('Description is empty')
+      return
     }
+    if (amountNum <= 0) {
+      console.warn('Amount must be greater than 0, got:', amountNum)
+      return
+    }
+    
+    console.log('Adding expense:', { description, amountNum })
+    onAddExpense({
+      description,
+      amount: amountNum,
+      date: new Date().toLocaleDateString()
+    })
+    setDescription('')
+    setAmount('')
   }
 
   const handleAddIncome = (e) => {
@@ -46,7 +58,7 @@ function ExpenseForm({ onAddExpense, onAddIncome }) {
           </div>
           <div className="form-buttons">
             <button type="submit" className="add-btn income-btn">
-              ✓ Add Income
+              Add Income
             </button>
             <button 
               type="button" 
@@ -56,7 +68,7 @@ function ExpenseForm({ onAddExpense, onAddIncome }) {
                 setAmount('')
               }}
             >
-              ✕ Cancel
+              Cancel
             </button>
           </div>
         </form>
@@ -73,7 +85,10 @@ function ExpenseForm({ onAddExpense, onAddIncome }) {
           <input
             type="text"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => {
+              console.log('Description input changed to:', e.target.value)
+              setDescription(e.target.value)
+            }}
             placeholder="Enter your Expense Description..."
             className="input-field"
           />
@@ -84,7 +99,10 @@ function ExpenseForm({ onAddExpense, onAddIncome }) {
           <input
             type="number"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => {
+              console.log('Amount input changed to:', e.target.value)
+              setAmount(e.target.value)
+            }}
             placeholder="Enter your Amount, Expense[s] or Income [...]"
             className="input-field"
             step="0.01"
@@ -99,7 +117,10 @@ function ExpenseForm({ onAddExpense, onAddIncome }) {
 
       <button 
         className="income-toggle-btn"
-        onClick={() => setShowIncomeForm(true)}
+        onClick={() => {
+          console.log('💵 Add Income button clicked')
+          setShowIncomeForm(true)
+        }}
       >
         💵 Add Income
       </button>

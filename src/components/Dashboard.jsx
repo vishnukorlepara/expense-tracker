@@ -9,25 +9,33 @@ function Dashboard({ userName, onLogout }) {
   
   const [expenses, setExpenses] = useState(() => {
     const saved = localStorage.getItem(`${storageKey}_expenses`)
-    return saved ? JSON.parse(saved) : []
+    const parsed = saved ? JSON.parse(saved) : []
+    console.log(`Loaded expenses for user "${userName}":`, parsed)
+    return parsed
   })
   
   const [income, setIncome] = useState(() => {
     const saved = localStorage.getItem(`${storageKey}_income`)
-    return saved ? parseFloat(saved) : 0
+    const parsed = saved ? parseFloat(saved) : 0
+    console.log(`Loaded income for user "${userName}":`, parsed)
+    return parsed
   })
 
   // Save expenses to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem(`${storageKey}_expenses`, JSON.stringify(expenses))
-  }, [expenses, storageKey])
+    console.log(`Saved expenses for user "${userName}":`, expenses)
+  }, [expenses, storageKey, userName])
 
   // Save income to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem(`${storageKey}_income`, income.toString())
-  }, [income, storageKey])
+    console.log(`Saved income for user "${userName}":`, income)
+  }, [income, storageKey, userName])
+
 
   const handleAddExpense = (expense) => {
+    console.log('Dashboard received expense:', expense)
     setExpenses([...expenses, { ...expense, id: Date.now() }])
   }
 
@@ -36,6 +44,7 @@ function Dashboard({ userName, onLogout }) {
   }
 
   const handleAddIncome = (amount) => {
+    console.log('Dashboard received income:', amount)
     if (amount > 0) {
       setIncome(income + amount)
     }
